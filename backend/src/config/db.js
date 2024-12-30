@@ -7,10 +7,14 @@ const pool = new Pool({
   database: process.env.DB_NAME || "train_booking",
   password: process.env.DB_PASSWORD || "",
   port: process.env.DB_PORT || 5432,
+  ssl: {
+    rejectUnauthorized: false, // Allows self-signed certificates
+  },
 });
 
-pool.on("connect", () => {
-  console.log("Connected DB");
-});
+pool
+  .connect()
+  .then(() => console.log("Connected to the database"))
+  .catch((err) => console.error("Database connection failed", err));
 
 module.exports = pool;
